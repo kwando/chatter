@@ -17,6 +17,7 @@ describe Chatter::Server do
     end
 
     it 'forwards message to clients' do
+      client.expect(:hash, 1234)
       server.register(client)
       client.expect(:send_message, client, [msg])
       server.broadcast(msg)
@@ -25,7 +26,10 @@ describe Chatter::Server do
   end
 
   describe '#register' do
-    let(:result) { server.register(client) }
+    let(:result) {
+      client.expect(:hash, 1234)
+      server.register(client)
+    }
 
     it 'returns self' do
       result.must_equal(server)
@@ -33,6 +37,25 @@ describe Chatter::Server do
 
     it 'should have 1 connected clients' do
       result.connected_clients.must_equal(1)
+    end
+  end
+
+  describe '#unregister' do
+    let(:result){
+      client.expect(:hash, 1234)
+      client.expect(:hash, 1234)
+
+      server.register(client)
+      server.unregister(client)
+    }
+
+    it 'returns self' do
+      result.must_equal(server)
+      client.verify
+    end
+
+    it 'should remove client' do
+      result.connected_clients.must_equal(0)
     end
   end
 end
