@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe Chatter::Codecs::JSON do
-  let(:codec) { Chatter::Codecs::JSON}
+  let(:codec) { Chatter::Codecs::JSON }
   let(:msg) { {body: 'hello'} }
 
 
@@ -23,9 +23,7 @@ describe Chatter::Codecs::JSON do
     end
   end
 
-  describe 'integration' do
-    it 'should work' do
-      codec.decode(codec.encode(msg)).must_equal(msg)
-    end
+  it 'passes the sanity test' do
+    codec.decode(codec.encode(msg)).must_equal(msg)
   end
 end
