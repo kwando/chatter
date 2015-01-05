@@ -1,4 +1,5 @@
 require 'chatter/version'
+require 'chatter/connection'
 require 'chatter/client'
 require 'chatter/codecs'
 
@@ -11,31 +12,15 @@ module Chatter
     def connected_clients
       @clients.size
     end
-  end
 
-  class Connection
-    def initialize(socket, codec: Codecs::JSON)
-      @codec = codec
-      @socket = socket
-      @connected = true
-    end
-
-    def open?
-      @connected
-    end
-
-    def write(message)
-      @socket.write(codec.encode(message))
+    def register(client)
+      @clients << client
       self
     end
 
-    def close
-      @socket.close
-      @connected = false
+    def broadcast(message)
+      @clients.each { |client| client.send_message(message) }
       self
     end
-
-    private
-    attr_reader :codec, :connection
   end
 end
