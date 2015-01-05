@@ -1,4 +1,5 @@
 # Chatter
+[![Build Status](https://travis-ci.org/kwando/chatter.svg)](https://travis-ci.org/kwando/chatter)
 
 TODO: Write a gem description
 
